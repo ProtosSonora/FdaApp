@@ -23,6 +23,8 @@ namespace FdaApp.Models
         public int SelectedType { get; set; }
         public string SelectedCount { get; set; }
         public List<SelectListItem> FDACountsList { get; set; }
+
+        public string SearchTitle { get; set; }
     }
 
     public class FDAInputModel
@@ -34,6 +36,7 @@ namespace FdaApp.Models
         public int skip { get; set; }
         public string selectedcount { get; set; }
         public string selectedtype { get; set; }
+        public string searchTitle { get; set; }
     }
 
     public class Food

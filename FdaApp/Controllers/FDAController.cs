@@ -114,6 +114,7 @@ namespace FdaApp.Controllers
                     string baseurl = string.Empty;
                     
                     string selectedcount = string.Empty;
+                    string searchTitle = string.Empty;
                     if (!string.IsNullOrWhiteSpace(objFDAInputModel.url))
                     {
                         baseurl = objFDAInputModel.url;
@@ -126,6 +127,11 @@ namespace FdaApp.Controllers
                     if (!string.IsNullOrWhiteSpace(objFDAInputModel.selectedcount))
                     {
                         selectedcount = objFDAInputModel.selectedcount;
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(objFDAInputModel.searchTitle))
+                    {
+                        searchTitle = objFDAInputModel.searchTitle;
                     }
 
                     if (objFDAInputModel.limit > 0)
@@ -145,29 +151,73 @@ namespace FdaApp.Controllers
 
                     if (!string.IsNullOrWhiteSpace(objFDAInputModel.fromDate) && !string.IsNullOrWhiteSpace(objFDAInputModel.toDate))
                     {
-                        if (selectedtype == "Food" && (selectedcount == "report_date" || selectedcount == "recall_initiation_date"))
-                        {
+                        if (selectedtype == "Food"){
+                            if(selectedcount == "report_date" || selectedcount == "recall_initiation_date")
+                            {
+                                if (_parameters != "")
+                                { _parameterswithoutlimit += "&search=" + selectedcount + ":[" + objFDAInputModel.fromDate + "+TO+" + objFDAInputModel.toDate + "]"; }
+                                else
+                                { _parameterswithoutlimit += "search=" + selectedcount + ":[" + objFDAInputModel.fromDate + "+TO+" + objFDAInputModel.toDate + "]"; }
 
-                            if (_parameters != "")
-                            { _parameterswithoutlimit += "&search=" + selectedcount + ":[" + objFDAInputModel.fromDate + "+TO+" + objFDAInputModel.toDate + "]"; }
-                            else
-                            { _parameterswithoutlimit += "search=" + selectedcount + ":[" + objFDAInputModel.fromDate + "+TO+" + objFDAInputModel.toDate + "]"; }
+                                if (!string.IsNullOrWhiteSpace(searchTitle))
+                                {
+                                    _parameterswithoutlimit += "+AND+_exists_:" + searchTitle;
+                                }
+                            }
+                            else if (!string.IsNullOrWhiteSpace(searchTitle))
+                            {
+                                if (_parameters != "")
+                                { _parameterswithoutlimit += "&search=" + selectedcount + ":" + '"' + objFDAInputModel.searchTitle + '"'; }
+                                else
+                                { _parameterswithoutlimit += "search=" + selectedcount + ":"+ '"' + objFDAInputModel.searchTitle + '"'; }
+                            }
+
                             _parameters += _parameterswithoutlimit;
                         }
-                        else if (selectedtype == "Device" && (selectedcount == "date_of_event" || selectedcount == "date_report" || selectedcount == "date_received"))
+                        else if (selectedtype == "Device")
                         {
-                            if (_parameters != "")
-                            { _parameterswithoutlimit += "&search=" + selectedcount + ":[" + objFDAInputModel.fromDate + "+TO+" + objFDAInputModel.toDate + "]"; }
-                            else
-                            { _parameterswithoutlimit += "search=" + selectedcount + ":[" + objFDAInputModel.fromDate + "+TO+" + objFDAInputModel.toDate + "]"; }
+                            if (selectedcount == "date_of_event" || selectedcount == "date_report" || selectedcount == "date_received")
+                            {
+                                if (_parameters != "")
+                                { _parameterswithoutlimit += "&search=" + selectedcount + ":[" + objFDAInputModel.fromDate + "+TO+" + objFDAInputModel.toDate + "]"; }
+                                else
+                                { _parameterswithoutlimit += "search=" + selectedcount + ":[" + objFDAInputModel.fromDate + "+TO+" + objFDAInputModel.toDate + "]"; }
+
+                                if (!string.IsNullOrWhiteSpace(searchTitle))
+                                {
+                                    _parameterswithoutlimit += "+AND+_exists_:" + searchTitle;
+                                }
+                            }
+                            else if (!string.IsNullOrWhiteSpace(searchTitle))
+                            {
+                                if (_parameters != "")
+                                { _parameterswithoutlimit += "&search=" + selectedcount + ":" + '"' + objFDAInputModel.searchTitle + '"'; }
+                                else
+                                { _parameterswithoutlimit += "search=" + selectedcount + ":" + '"' + objFDAInputModel.searchTitle + '"'; }
+                            }
                             _parameters += _parameterswithoutlimit;
                         }
-                        else if (selectedtype == "Drug" && (selectedcount == "receivedate" || selectedcount == "receiptdate" || selectedcount == "transmissiondate"))
+                        else if (selectedtype == "Drug")
                         {
-                            if (_parameters != "")
-                            { _parameterswithoutlimit += "&search=" + selectedcount + ":[" + objFDAInputModel.fromDate + "+TO+" + objFDAInputModel.toDate + "]"; }
-                            else
-                            { _parameterswithoutlimit += "search=" + selectedcount + ":[" + objFDAInputModel.fromDate + "+TO+" + objFDAInputModel.toDate + "]"; }
+                            if (selectedcount == "receivedate" || selectedcount == "receiptdate" || selectedcount == "transmissiondate")
+                            {
+                                if (_parameters != "")
+                                { _parameterswithoutlimit += "&search=" + selectedcount + ":[" + objFDAInputModel.fromDate + "+TO+" + objFDAInputModel.toDate + "]"; }
+                                else
+                                { _parameterswithoutlimit += "search=" + selectedcount + ":[" + objFDAInputModel.fromDate + "+TO+" + objFDAInputModel.toDate + "]"; }
+
+                                if (!string.IsNullOrWhiteSpace(searchTitle))
+                                {
+                                    _parameterswithoutlimit += "+AND+_exists_:" + searchTitle;
+                                }
+                            }
+                            else if (!string.IsNullOrWhiteSpace(searchTitle))
+                            {
+                                if (_parameters != "")
+                                { _parameterswithoutlimit += "&search=" + selectedcount + ":" + '"' + objFDAInputModel.searchTitle + '"'; }
+                                else
+                                { _parameterswithoutlimit += "search=" + selectedcount + ":" + '"' + objFDAInputModel.searchTitle + '"'; }
+                            }
                             _parameters += _parameterswithoutlimit;
                         }
                     }
