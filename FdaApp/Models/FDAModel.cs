@@ -139,18 +139,6 @@ namespace FdaApp.Models
 
     public class Drug
     {
-        //public string set_id { get; set; }
-        //public string version { get; set; }
-        ////public string id { get; set; }
-        //public string effective_time { get; set; }
-        //public List<string> indications_and_usage { get; set; }
-        //public List<string> keep_out_of_reach_of_children { get; set; }
-        //public List<string> dosage_and_administration { get; set; }
-        //public List<string> purpose { get; set; }
-        //public List<string> package_label_principal_display_panel { get; set; }
-        //public List<string> active_ingredient { get; set; }
-        //public List<string> inactive_ingredient { get; set; }
-
         public string safetyreportid { get; set; }
         public string receivedate { get; set; }
         public string receiptdate { get; set; }

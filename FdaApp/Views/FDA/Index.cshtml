@@ -3,94 +3,97 @@
     ViewBag.Title = "";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<h2>Index</h2>
+<h2></h2>
 <style>
     .Max-width {
       max-width: 150px!important;
     }
 </style>
-<div style="width:80%;">
+<div style="width:100%;">
     @using (Html.BeginForm("", "", FormMethod.Post, new { enctype = "multipart/form-data", id = "frmFDAIndex" }))
     {
-        <div style="height:30px;">
-            <div style="width:15%; text-align:right; float:left;padding-right:10px;"><label for="Type">Type :</label></div>
-            <div style="width:25%; text-align:left; float:left;">
-                @Html.DropDownListFor(x => x.SelectedType, new SelectList(Model.FDATypesList, "Value", "Text"), null, new { Id = "ddlType",@style="width: 150px;" })
+        <div style="width: 50%; float: left;">
+            <div style="height: 30px;">
+                <div style="width: 23%; text-align: left; float: left; padding-right: 10px;">
+                    <label for="Type">Type :</label>
+                </div>
+                <div style="width: 30%; text-align: left; float: left;">
+                    @Html.DropDownListFor(x => x.SelectedType, new SelectList(Model.FDATypesList, "Value", "Text"), null, new { Id = "ddlType", @style = "width: 150px;" })
+                </div>
+
+                <div style="width: 14%; text-align: left; float: left; padding-right: 10px;">
+                    <label for="Type">Field :</label>
+                </div>
+                <div style="width: 25%; text-align: left; float: left;">
+                    @Html.DropDownListFor(x => x.SelectedCount, new SelectList(Model.FDACountsList, "Value", "Text"), null, new { Id = "ddlCount", @class = "Max-width" })
+                </div>
+            </div>
+            <div style="height: 30px;" id="dvFromDate">
+                <div style="width: 23%; text-align: left; float: left; padding-right: 10px;">
+                    <label for="StartDate">From Date :</label>
+                </div>
+                <div style="width: 30%; text-align: left; float: left;">
+                    @Html.TextBoxFor(c => c.FromDate, new { id = "FromDate", @class = "Max-width" })
+                </div>
+                <div style="width: 14%; text-align: left; float: left; padding-right: 10px;">
+                    <label for="StartDate">To Date :</label>
+                </div>
+                <div style="width: 25%; text-align: left; float: left;">
+                    @Html.TextBoxFor(c => c.ToDate, new { id = "ToDate", @class = "Max-width" })
+                </div>
+            </div>
+            <div style="height: 30px;" id="divSearchTitle">
+                <div style="width: 23%; text-align: left; float: left; padding-right: 10px;">
+                    <label for="SearchTitle">Filter :</label>
+                </div>
+                <div style="width: 72%; text-align: left; float: left;">
+                    @Html.TextBoxFor(c => c.SearchTitle, new { id = "txtSearchTitle", @style = "width:97.9%; max-width:none;" })
+                </div>
+
             </div>
 
-            <div style="width:8%; text-align:right; float:left;padding-right:10px;">
-                <label for="Type">Field :</label>
-            </div>
-            <div style="width:25%; text-align:left; float:left;">
-                @Html.DropDownListFor(x => x.SelectedCount, new SelectList(Model.FDACountsList, "Value", "Text"), null, new { Id = "ddlCount", @class="Max-width" })
-            </div>
-        </div>
-        <div style="height:30px;" id="dvFromDate">
-            <div style="width:15%; text-align:right; float:left;padding-right:10px;">
-                <label for="StartDate">From Date :</label>
-            </div>
-            <div style="width:25%; text-align:left; float:left;">
-                @Html.TextBoxFor(c => c.FromDate, new { id = "FromDate", @class = "Max-width" })
-            </div>
-            <div style="width:8%; text-align:right; float:left;padding-right:10px;">
-                <label for="StartDate">To Date :</label>
-            </div>
-            <div style="width:25%; text-align:left; float:left;">
-                @Html.TextBoxFor(c => c.ToDate, new { id = "ToDate", @class = "Max-width" })
+            @*<div style="height: 30px;" id="dvToDate">
+                </div>
+            *@
+            <div style="height: 30px;">
+                <div style="width: 23%; text-align: left; float: left; padding-right: 10px;">
+                    <label for="limit">No Of Records :</label>
+                </div>
+                <div style="width: 30%; text-align: left; float: left;">
+                    @Html.TextBoxFor(c => c.Limit, new { id = "txtLimit", @class = "Max-width" })
+                </div>
+                <div style="width: 14%; text-align: left; float: left; padding-right: 10px;">
+                    <label for="skip">Skip :</label>
+                </div>
+                <div style="width: 25%; text-align: left; float: left;">
+                    @Html.TextBoxFor(c => c.Skip, new { id = "txtSkip", @class = "Max-width" })
+                </div>
             </div>
         </div>
-        <div style="height:30px;" id="divSearchTitle">
-            <div style="width:15%; text-align:right; float:left;padding-right:10px;">
-                <label for="SearchTitle">Search Title :</label>
-            </div>
-            <div style="width:65%; text-align:left; float:left;">
-                @Html.TextBoxFor(c => c.SearchTitle, new { id = "txtSearchTitle",@style="width:76.1%; max-width:none;" })
-            </div>
+        <div style="width: 50%; float: left; font-size:11px;">
+            *To filter the records on the basis of field, select perticular field and enter search criteria in filter box.
+            <br />
+            *To filter the data on date range, please select date field and select date in from and to box
         </div>
-
-        @*<div style="height:30px;" id="dvToDate">
-            
-        </div>*@
-        <div style="height:30px;">
-            <div style="width:15%; text-align:right; float:left;padding-right:10px;">
-                <label for="limit">No Of Records :</label>
+        <div style="height: 50px; clear:both; padding-top:20px;">
+            <div style="width: 34%; text-align: left; float: left;">
+                <label id="lblErrorMsg" style="color: red"></label>
             </div>
-            <div style="width:25%; text-align:left; float:left;">
-                @Html.TextBoxFor(c => c.Limit, new { id = "txtLimit", @class = "Max-width" })
-            </div>
-            <div style="width:8%; text-align:right; float:left;padding-right:10px;">
-                <label for="skip">Skip :</label>
-            </div>
-            <div style="width:25%; text-align:left; float:left;">
-                @Html.TextBoxFor(c => c.Skip, new { id = "txtSkip", @class = "Max-width" })
-            </div>
-        </div>
-
-        <div style="height:50px;">
-            <div style="width:49%; text-align:right; float:left;">
-                <label id="lblErrorMsg" style="color:red"></label>
-            </div>
-            <div style="width:15.5%; text-align:right; float:left;">
+            <div style="width: 12.5%; text-align: right; float: left;">
                 <input type="button" id="btnShow" value="Show" onclick="ShowResult();" class="btn btn-default" />
                 <input type="button" id="btnClear" value="Clear" onclick="Clear();" class="btn btn-default" />
             </div>
         </div>
-        @*<div style="height:30px;">
-            <label id="lblErrorMsg" style="color:red"></label>
-        </div>*@
-        <div style="width:98%; margin-top:20px; display:none;" id="divFoodGrid">
-            <table class="table table-striped table-hover table-bordered">
+        <div style="width: 98%; display: none;" id="divFoodGrid">
+            <table class="table table-striped table-hover table-bordered" style="margin-top:20px;">
                 <thead>
-                    <tr style="background-color:lightgray;">
+                    <tr style="background-color: lightgray;">
                         <th class="center">Sr. No</th>
                         <th class="center">Recall Number</th>
-                        @*<th class="center">Reason for Recall</th>*@
                         <th class="center">Status</th>
                         <th class="center">Distribution Pattern</th>
                         <th class="center">Product Quantity</th>
                         <th class="center">Recall Initiation Date</th>
-                        @*<th class="center">Product Description</th>*@
                         <th class="center">Country</th>
                         <th class="center">State</th>
                         <th class="center">City</th>
@@ -103,10 +106,10 @@
                 <tbody id="griddataFood"></tbody>
             </table>
         </div>
-        <div style="width:98%; margin-top:20px; display:none;" id="divDeviceGrid">
-            <table class="table table-striped table-hover table-bordered">
+        <div style="width: 98%; display: none;" id="divDeviceGrid">
+            <table class="table table-striped table-hover table-bordered" style="margin-top:20px;">
                 <thead>
-                    <tr style="background-color:lightgray;">
+                    <tr style="background-color: lightgray;">
                         <th class="center">Sr. No</th>
                         <th class="center">Report Number</th>
                         <th class="center">Manufacturer Contact State</th>
@@ -118,17 +121,17 @@
                         <th class="center">Date Report</th>
                         <th class="center">Manufacturer Contact ZipCode</th>
                         <th class="center">Date Recieved</th>
-                        
+
                     </tr>
                 </thead>
 
                 <tbody id="griddataDevice"></tbody>
             </table>
         </div>
-        <div style="width:98%; margin-top:20px; display:none;" id="divDrugGrid">
-            <table class="table table-striped table-hover table-bordered">
+        <div style="width: 98%;  display: none;" id="divDrugGrid">
+            <table class="table table-striped table-hover table-bordered" style="margin-top:20px;">
                 <thead>
-                    <tr style="background-color:lightgray;">
+                    <tr style="background-color: lightgray;">
                         <th class="center">Sr. No</th>
                         <th class="center">Safety ReportId</th>
                         <th class="center">Receive Date</th>
@@ -180,16 +183,58 @@
         $('#dvToDate').hide();
 
         $('#txtLimit').val(10);
+
+        $("#txtLimit").keydown(function (event) {
+            if (event.shiftKey) {
+                event.preventDefault();
+            }
+            if (event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 37 || event.keyCode == 39) {
+            }
+            else {
+                if (event.keyCode < 95) {
+                    if (event.keyCode < 48 || event.keyCode > 57) {
+                        event.preventDefault();
+                    }
+                }
+                else {
+                    if (event.keyCode < 96 || event.keyCode > 105) {
+                        event.preventDefault();
+                    }
+                }
+            }
+        });
+
+        $("#txtSkip").keydown(function (event) {
+            if (event.shiftKey) {
+                event.preventDefault();
+            }
+            if (event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 37 || event.keyCode == 39) {
+            }
+            else {
+                if (event.keyCode < 95) {
+                    if (event.keyCode < 48 || event.keyCode > 57) {
+                        event.preventDefault();
+                    }
+                }
+                else {
+                    if (event.keyCode < 96 || event.keyCode > 105) {
+                        event.preventDefault();
+                    }
+                }
+            }
+        });
     });
 
     function setdates() {
         $('#FromDate').datepicker({
-            dateFormat: 'mm-dd-yy',
+            //dateFormat: 'mm-dd-yy',
+            dateFormat: 'yymmdd',
             changeMonth: true,
             changeYear: true
         }).datepicker("setDate", new Date());
         $('#ToDate').datepicker({
-            dateFormat: 'mm-dd-yy',
+            //dateFormat: 'mm-dd-yy',
+            dateFormat: 'yymmdd',
             changeMonth: true,
             changeYear: true
         }).datepicker("setDate", new Date());
@@ -228,7 +273,6 @@
 
         if (selectedtype == "Food"){
             if ((selectedcount == "report_date" || selectedcount == "recall_initiation_date")) {
-                //$('#divSearchTitle').hide();
                 $('#dvFromDate').show();
                 $('#dvToDate').show();
             }
@@ -240,7 +284,6 @@
         }
         else if (selectedtype == "Device"){
             if (selectedcount == "date_of_event" || selectedcount == "date_report" || selectedcount == "date_received") {
-                //$('#divSearchTitle').hide();
                 $('#dvFromDate').show();
                 $('#dvToDate').show();
             }
@@ -252,7 +295,6 @@
         }
         else if (selectedtype == "Drug"){
             if (selectedcount == "receivedate" || selectedcount == "receiptdate" || selectedcount == "transmissiondate") {
-                //$('#divSearchTitle').hide();
                 $('#dvFromDate').show();
                 $('#dvToDate').show();
             }
@@ -270,7 +312,6 @@
     }
 
     function ShowResult() {
-        
         $('#lblErrorMsg').text("");
         var _fdate = $('#FromDate').val();
         var _tdate = $('#ToDate').val();
@@ -298,8 +339,8 @@
                 url = "http://api.fda.gov/drug/event.json";
             }
 
-            _fdate = FormateDateTime(_fdate);
-            _tdate = FormateDateTime(_tdate);
+            //_fdate = FormateDateTime(_fdate);
+            //_tdate = FormateDateTime(_tdate);
             var objEvent = { url: url, fromDate: _fdate, toDate: _tdate, limit: _Limit, skip: _Skip, selectedcount: selectedcount, selectedtype: selectedtype, searchTitle: _searchTitle }
             $.ajaxSettings.cache = false;
             $.ajax({
@@ -310,63 +351,65 @@
                     var row = "";
                     if (data.Message != "") {
                         $('#lblErrorMsg').text(data.Message);
-                    }
-                   
-                    var _srno = 0;
-                   
-                    if (selectedtype == "Food") {
-                        $.each(data.GridList, function (i, objGriddata) {
-                            _srno += 1;
-                            //row += "<tr><td>" + _srno + "</td><td>" + objGriddata.recall_number + "</td><td>" + objGriddata.reason_for_recall + "</td><td>" + objGriddata.status + "</td><td>" + objGriddata.distribution_pattern + "</td><td>" + objGriddata.product_quantity + "</td><td>" + objGriddata.recall_initiation_date + "</td><td>" + objGriddata.product_description + "</td><td>" + objGriddata.country + "</td><td>" + objGriddata.state + "</td><td>" + objGriddata.city + "</td><td>" + objGriddata.recalling_firm + "</td><td>" + objGriddata.report_date + "</td><td>" + objGriddata.classification + "</td></tr>";
-                            row += "<tr><td>" + _srno + "</td><td>" + objGriddata.recall_number + "</td><td>" + objGriddata.status + "</td><td>" + objGriddata.distribution_pattern + "</td><td>" + objGriddata.product_quantity + "</td><td>" + objGriddata.recall_initiation_date + "</td><td>" + objGriddata.country + "</td><td>" + objGriddata.state + "</td><td>" + objGriddata.city + "</td><td>" + objGriddata.recalling_firm + "</td><td>" + objGriddata.report_date + "</td><td>" + objGriddata.classification + "</td></tr>";
-                        });
-                        $('#divFoodGrid').show();
-                        $("#griddataFood").html(row);
-                        
-                        $.each(data.ChartList, function (i, objChartdata) {
 
-                        });
+                        $('#divFoodGrid').hide();
+                        $('#divDeviceGrid').hide();
+                        $('#divDrugGrid').hide();
                     }
-                    else if (selectedtype == "Device") {
-                        $.each(data.GridList, function (i, objGriddata) {
-                            _srno += 1;
-                            //row += "<tr><td>" + _srno + "</td><td>" + objGriddata.report_number + "</td><td>" + objGriddata.manufacturer_contact_state + "</td><td>" + objGriddata.event_type + "</td><td>" + objGriddata.manufacturer_g1_address_1 + "</td><td>" + objGriddata.manufacturer_postal_code + "</td></tr>";
-                            row += "<tr><td>" + _srno + "</td><td>" + objGriddata.report_number + "</td><td>" + objGriddata.manufacturer_contact_state + "</td><td>" + objGriddata.event_type + "</td><td>" + objGriddata.reporter_occupation_code + "</td><td>" + objGriddata.date_of_event + "</td><td>" + objGriddata.manufacturer_contact_country + "</td><td>" + objGriddata.manufacturer_contact_city + "</td><td>" + objGriddata.date_report + "</td><td>" + objGriddata.manufacturer_contact_zip_code + "</td><td>" + objGriddata.date_received + "</td></tr>";
-                        });
-                       
-                        $('#divDeviceGrid').show();
-                        $("#griddataDevice").html(row);
-                        
-                        $.each(data.ChartList, function (i, objChartdata) {
+                    else {
+                        var _srno = 0;
 
-                        });
+                        if (selectedtype == "Food") {
+                            $.each(data.GridList, function (i, objGriddata) {
+                                _srno += 1;
+                                row += "<tr><td>" + _srno + "</td><td>" + objGriddata.recall_number + "</td><td>" + objGriddata.status + "</td><td>" + objGriddata.distribution_pattern + "</td><td>" + objGriddata.product_quantity + "</td><td>" + objGriddata.recall_initiation_date + "</td><td>" + objGriddata.country + "</td><td>" + objGriddata.state + "</td><td>" + objGriddata.city + "</td><td>" + objGriddata.recalling_firm + "</td><td>" + objGriddata.report_date + "</td><td>" + objGriddata.classification + "</td></tr>";
+                            });
+                            $('#divFoodGrid').show();
+                            $("#griddataFood").html(row);
+
+                            $.each(data.ChartList, function (i, objChartdata) {
+
+                            });
+                        }
+                        else if (selectedtype == "Device") {
+                            $.each(data.GridList, function (i, objGriddata) {
+                                _srno += 1;
+                                row += "<tr><td>" + _srno + "</td><td>" + objGriddata.report_number + "</td><td>" + objGriddata.manufacturer_contact_state + "</td><td>" + objGriddata.event_type + "</td><td>" + objGriddata.reporter_occupation_code + "</td><td>" + objGriddata.date_of_event + "</td><td>" + objGriddata.manufacturer_contact_country + "</td><td>" + objGriddata.manufacturer_contact_city + "</td><td>" + objGriddata.date_report + "</td><td>" + objGriddata.manufacturer_contact_zip_code + "</td><td>" + objGriddata.date_received + "</td></tr>";
+                            });
+
+                            $('#divDeviceGrid').show();
+                            $("#griddataDevice").html(row);
+
+                            $.each(data.ChartList, function (i, objChartdata) {
+
+                            });
+                        }
+                        else if (selectedtype == "Drug") {
+                            $.each(data.GridList, function (i, objGriddata) {
+                                _srno += 1;
+                                row += "<tr><td>" + _srno + "</td><td>" + objGriddata.safetyreportid + "</td><td>" + objGriddata.receivedate + "</td><td>" + objGriddata.receiptdate + "</td><td>" + objGriddata.transmissiondate + "</td><td>" + objGriddata.companynumb + "</td></tr>";
+                            });
+                            $('#divDrugGrid').show();
+                            $("#griddataDrug").html(row);
+
+                            $.each(data.ChartList, function (i, objChartdata) {
+
+                            });
+                        }
                     }
-                    else if (selectedtype == "Drug") {
-                        $.each(data.GridList, function (i, objGriddata) {
-                            _srno += 1;
-                            row += "<tr><td>" + _srno + "</td><td>" + objGriddata.safetyreportid + "</td><td>" + objGriddata.receivedate + "</td><td>" + objGriddata.receiptdate + "</td><td>" + objGriddata.transmissiondate + "</td><td>" + objGriddata.companynumb + "</td></tr>";
-                        });
-                        $('#divDrugGrid').show();
-                        $("#griddataDrug").html(row);
-                        
-                        $.each(data.ChartList, function (i, objChartdata) {
-
-                        });
-                    }
-
                 }
             });
         }
         else {
             $('#lblErrorMsg').text("From Date should be less than To date");
-            //alert("FromDate should be less than todate");
         }
     }
-
+    
     function FormateDateTime(date) {
-        var dStart = new Date(date);
+        //var dStart = new Date(date);
+        var dStart = new Date(Date.parse(date));
         var curr_date = dStart.getDate();
-        var curr_month = dStart.getMonth()+1;
+        var curr_month = dStart.getMonth() + 1;
         var curr_year = dStart.getFullYear();
         if (curr_date.toString.length == 1)
             curr_month = "0" + curr_month;
@@ -383,12 +426,10 @@
         var items = "";
         if (selectedtype == "Food") {
             items += "<option value='recall_number'>Recall Number</option>";
-            //items += "<option value='reason_for_recall'>Reason For Recall</option>";
             items += "<option value='status'>Status</option>";
             items += "<option value='distribution_pattern'>Distribution Pattern</option>";
             items += "<option value='product_quantity'>Product Quantity</option>";
             items += "<option value='recall_initiation_date'>Recall Initiation Date</option>";
-            //items += "<option value='product_description'>Product Description</option>";
             items += "<option value='state'>State</option>";
             items += "<option value='country'>Country</option>";
             items += "<option value='city'>City</option>";
@@ -401,7 +442,6 @@
             items += "<option value='manufacturer_contact_state'>Manufacturer Contact State</option>";
             items += "<option value='event_type'>Event Type</option>";
             items += "<option value='reporter_occupation_code'>Reporter Occupation Code</option>";
-            //items += "<option value='manufacturer_state'>Manufacturer State</option>";
             items += "<option value='date_of_event'>Date Of Event</option>";
             items += "<option value='manufacturer_contact_country'>Manufacturer Contact Country</option>";
             items += "<option value='manufacturer_contact_city'>Manufacturer Contact City</option>";

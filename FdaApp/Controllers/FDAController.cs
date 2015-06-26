@@ -15,7 +15,6 @@ namespace FdaApp.Controllers
 {
     public class FDAController : Controller
     {
-        // GET: FDA
         public ActionResult Index()
         {
             try
@@ -34,69 +33,8 @@ namespace FdaApp.Controllers
                 throw;
             }
         }
-
-        //[AcceptVerbs(HttpVerbs.Post)]
-        ////public ActionResult GetResult(FDAModel objFDAModel)
-        //public ActionResult GetResult(string url)
-        //{
-        //    try
-        //    {
-        //        if (!string.IsNullOrWhiteSpace(url))
-        //        {
-        //            string baseurl = string.Empty;
-        //            //string fromdate = objFDAModel.FromDate.ToShortDateString();
-        //            //string todate = objFDAModel.ToDate.ToShortDateString();
-
-        //            //string parameters = string.Empty;
-        //            //if (objFDAModel.SelectedType == 1)
-        //            //{
-        //            //    baseurl = "https://api.fda.gov/food/enforcement.json?";
-        //            //}
-        //            //else if (objFDAModel.SelectedType == 2)
-        //            //{
-        //            //    baseurl = "https://api.fda.gov/device/event.json?";
-        //            //}
-        //            //else if (objFDAModel.SelectedType == 3)
-        //            //{
-        //            //    baseurl = "https://api.fda.gov/drug/label.json?";
-        //            //}
-
-        //            //if (!string.IsNullOrWhiteSpace(objFDAModel.SelectedCount))
-        //            //{
-        //            //    parameters = "count=" + objFDAModel.SelectedCount;
-        //            //}
-        //            //if (objFDAModel.Limit>0)
-        //            //{
-        //            //    parameters = "limit=" + objFDAModel.Limit;
-        //            //}
-        //            //if (objFDAModel.Skip >= 0)
-        //            //{
-        //            //    parameters = "skip=" + objFDAModel.Skip;
-        //            //}
-        //            //if (objFDAModel.FromDate != null && objFDAModel.ToDate != null)
-        //            //{
-        //            //    //[19910101+TO+20150101]
-        //            //    string FYear = objFDAModel.FromDate.Year.ToString();
-        //            //    string FMonth = objFDAModel.FromDate.Month.ToString();
-        //            //    string FDate = objFDAModel.FromDate.Date.ToString();
-        //            //    string TYear = objFDAModel.ToDate.Year.ToString();
-        //            //    string TMonth = objFDAModel.ToDate.Month.ToString();
-        //            //    string TDate = objFDAModel.ToDate.Date.ToString();
-
-        //            //    parameters = "search=" + objFDAModel.Skip;
-        //            //}
-
-        //        }
-        //    }
-        //    catch (Exception)
-        //    {
-        //        throw;
-        //    }
-        //    return null;
-        //}
-
+       
         [AcceptVerbs(HttpVerbs.Post)]
-        //public ActionResult GetResult(FDAModel objFDAModel)
         public ActionResult GetResult(FDAInputModel objFDAInputModel)
         {
             string selectedtype = string.Empty;
@@ -108,17 +46,15 @@ namespace FdaApp.Controllers
             {
                 if (objFDAInputModel!=null)
                 {
-                    string url = string.Empty;
                     string _parameters = string.Empty;
-                    string _parameterswithoutlimit = string.Empty;
-                    string baseurl = string.Empty;
+                    string _parametersWithoutLimit = string.Empty;
+                    string baseUrl = string.Empty;
                     
-                    string selectedcount = string.Empty;
+                    string selectedCount = string.Empty;
                     string searchTitle = string.Empty;
                     if (!string.IsNullOrWhiteSpace(objFDAInputModel.url))
                     {
-                        baseurl = objFDAInputModel.url;
-                        url = objFDAInputModel.url;
+                        baseUrl = objFDAInputModel.url;
                     }
                     if (!string.IsNullOrWhiteSpace(objFDAInputModel.selectedtype))
                     {
@@ -126,7 +62,7 @@ namespace FdaApp.Controllers
                     }
                     if (!string.IsNullOrWhiteSpace(objFDAInputModel.selectedcount))
                     {
-                        selectedcount = objFDAInputModel.selectedcount;
+                        selectedCount = objFDAInputModel.selectedcount;
                     }
 
                     if (!string.IsNullOrWhiteSpace(objFDAInputModel.searchTitle))
@@ -152,95 +88,83 @@ namespace FdaApp.Controllers
                     if (!string.IsNullOrWhiteSpace(objFDAInputModel.fromDate) && !string.IsNullOrWhiteSpace(objFDAInputModel.toDate))
                     {
                         if (selectedtype == "Food"){
-                            if(selectedcount == "report_date" || selectedcount == "recall_initiation_date")
+                            if(selectedCount == "report_date" || selectedCount == "recall_initiation_date")
                             {
                                 if (_parameters != "")
-                                { _parameterswithoutlimit += "&search=" + selectedcount + ":[" + objFDAInputModel.fromDate + "+TO+" + objFDAInputModel.toDate + "]"; }
+                                { _parametersWithoutLimit += "&search=" + selectedCount + ":[" + objFDAInputModel.fromDate + "+TO+" + objFDAInputModel.toDate + "]"; }
                                 else
-                                { _parameterswithoutlimit += "search=" + selectedcount + ":[" + objFDAInputModel.fromDate + "+TO+" + objFDAInputModel.toDate + "]"; }
+                                { _parametersWithoutLimit += "search=" + selectedCount + ":[" + objFDAInputModel.fromDate + "+TO+" + objFDAInputModel.toDate + "]"; }
 
                                 if (!string.IsNullOrWhiteSpace(searchTitle))
                                 {
-                                    _parameterswithoutlimit += "+AND+_exists_:" + searchTitle;
+                                    _parametersWithoutLimit += "+AND+_exists_:" + searchTitle;
                                 }
                             }
                             else if (!string.IsNullOrWhiteSpace(searchTitle))
                             {
                                 if (_parameters != "")
-                                { _parameterswithoutlimit += "&search=" + selectedcount + ":" + '"' + objFDAInputModel.searchTitle + '"'; }
+                                { _parametersWithoutLimit += "&search=" + selectedCount + ":" + '"' + objFDAInputModel.searchTitle + '"'; }
                                 else
-                                { _parameterswithoutlimit += "search=" + selectedcount + ":"+ '"' + objFDAInputModel.searchTitle + '"'; }
+                                { _parametersWithoutLimit += "search=" + selectedCount + ":"+ '"' + objFDAInputModel.searchTitle + '"'; }
                             }
 
-                            _parameters += _parameterswithoutlimit;
+                            _parameters += _parametersWithoutLimit;
                         }
                         else if (selectedtype == "Device")
                         {
-                            if (selectedcount == "date_of_event" || selectedcount == "date_report" || selectedcount == "date_received")
+                            if (selectedCount == "date_of_event" || selectedCount == "date_report" || selectedCount == "date_received")
                             {
                                 if (_parameters != "")
-                                { _parameterswithoutlimit += "&search=" + selectedcount + ":[" + objFDAInputModel.fromDate + "+TO+" + objFDAInputModel.toDate + "]"; }
+                                { _parametersWithoutLimit += "&search=" + selectedCount + ":[" + objFDAInputModel.fromDate + "+TO+" + objFDAInputModel.toDate + "]"; }
                                 else
-                                { _parameterswithoutlimit += "search=" + selectedcount + ":[" + objFDAInputModel.fromDate + "+TO+" + objFDAInputModel.toDate + "]"; }
+                                { _parametersWithoutLimit += "search=" + selectedCount + ":[" + objFDAInputModel.fromDate + "+TO+" + objFDAInputModel.toDate + "]"; }
 
                                 if (!string.IsNullOrWhiteSpace(searchTitle))
                                 {
-                                    _parameterswithoutlimit += "+AND+_exists_:" + searchTitle;
+                                    _parametersWithoutLimit += "+AND+_exists_:" + searchTitle;
                                 }
                             }
                             else if (!string.IsNullOrWhiteSpace(searchTitle))
                             {
                                 if (_parameters != "")
-                                { _parameterswithoutlimit += "&search=" + selectedcount + ":" + '"' + objFDAInputModel.searchTitle + '"'; }
+                                { _parametersWithoutLimit += "&search=" + selectedCount + ":" + '"' + objFDAInputModel.searchTitle + '"'; }
                                 else
-                                { _parameterswithoutlimit += "search=" + selectedcount + ":" + '"' + objFDAInputModel.searchTitle + '"'; }
+                                { _parametersWithoutLimit += "search=" + selectedCount + ":" + '"' + objFDAInputModel.searchTitle + '"'; }
                             }
-                            _parameters += _parameterswithoutlimit;
+                            _parameters += _parametersWithoutLimit;
                         }
                         else if (selectedtype == "Drug")
                         {
-                            if (selectedcount == "receivedate" || selectedcount == "receiptdate" || selectedcount == "transmissiondate")
+                            if (selectedCount == "receivedate" || selectedCount == "receiptdate" || selectedCount == "transmissiondate")
                             {
                                 if (_parameters != "")
-                                { _parameterswithoutlimit += "&search=" + selectedcount + ":[" + objFDAInputModel.fromDate + "+TO+" + objFDAInputModel.toDate + "]"; }
+                                { _parametersWithoutLimit += "&search=" + selectedCount + ":[" + objFDAInputModel.fromDate + "+TO+" + objFDAInputModel.toDate + "]"; }
                                 else
-                                { _parameterswithoutlimit += "search=" + selectedcount + ":[" + objFDAInputModel.fromDate + "+TO+" + objFDAInputModel.toDate + "]"; }
+                                { _parametersWithoutLimit += "search=" + selectedCount + ":[" + objFDAInputModel.fromDate + "+TO+" + objFDAInputModel.toDate + "]"; }
 
                                 if (!string.IsNullOrWhiteSpace(searchTitle))
                                 {
-                                    _parameterswithoutlimit += "+AND+_exists_:" + searchTitle;
+                                    _parametersWithoutLimit += "+AND+_exists_:" + searchTitle;
                                 }
                             }
                             else if (!string.IsNullOrWhiteSpace(searchTitle))
                             {
                                 if (_parameters != "")
-                                { _parameterswithoutlimit += "&search=" + selectedcount + ":" + '"' + objFDAInputModel.searchTitle + '"'; }
+                                { _parametersWithoutLimit += "&search=" + selectedCount + ":" + '"' + objFDAInputModel.searchTitle + '"'; }
                                 else
-                                { _parameterswithoutlimit += "search=" + selectedcount + ":" + '"' + objFDAInputModel.searchTitle + '"'; }
+                                { _parametersWithoutLimit += "search=" + selectedCount + ":" + '"' + objFDAInputModel.searchTitle + '"'; }
                             }
-                            _parameters += _parameterswithoutlimit;
+                            _parameters += _parametersWithoutLimit;
                         }
                     }
-                    //if (objFDAInputModel.limit == 0 && objFDAInputModel.skip == 0)
-                    //{
-                    //    if (selectedcount != "")
-                    //    {
-                    //        if (_parameterswithoutlimit != "")
-                    //        { _parameterswithoutlimit += "&count=" + selectedcount; }
-                    //        else
-                    //        { _parameterswithoutlimit += "count=" + selectedcount; }
-                    //        _parameters = _parameterswithoutlimit;
-                    //    }
-                    //}
 
                     if (_parameters != "")
                     {
-                        baseurl += "?" + _parameters;
+                        baseUrl += "?" + _parameters;
                     }
 
-                    JObject JsonResultGrid = null;
                     WebClient webAPi = new WebClient();
-                    Stream streamFDAApiResult = webAPi.OpenRead(baseurl);
+                    Stream streamFDAApiResult = webAPi.OpenRead(baseUrl);
                     StreamReader sReaderFDAApiResult = new StreamReader(streamFDAApiResult);
                     string sHtmlFDAApiResult = sReaderFDAApiResult.ReadToEnd();
                     
@@ -259,28 +183,7 @@ namespace FdaApp.Controllers
                         var items = JsonConvert.DeserializeObject<DrugMeta>(sHtmlFDAApiResult);
                         objDrugList = items.results.ToList();
                     }
-
-
-                    
-
-                    if (_parameterswithoutlimit != "")
-                    {
-                        url += "?" + _parameterswithoutlimit;
-                    }
-
-                    //JObject JsonResultChart = null;
-
-                    Stream streamFDAApiResultChart = webAPi.OpenRead(url);
-                    StreamReader sReaderFDAApiResultChart = new StreamReader(streamFDAApiResultChart);
-                    string sHtmlFDAApiResultChart = sReaderFDAApiResultChart.ReadToEnd();
-                    //JsonResultChart = JObject.Parse(sHtmlFDAApiResultChart);
-                    //return objFoodList;
-
-                    
-                    var chartItems = JsonConvert.DeserializeObject<ChartMeta>(sHtmlFDAApiResultChart);
-                    objCountResultsChartList = chartItems.results.ToList();
-
-                    //return Json(objFoodList);
+                                       
                     if (selectedtype == "Food")
                     {
                         return Json(new { GridList = objFoodList, ChartList = objCountResultsChartList, Message="" }, JsonRequestBehavior.AllowGet);
@@ -297,46 +200,34 @@ namespace FdaApp.Controllers
             }
             catch (Exception ex)
             {
-                if (selectedtype == "Food")
+                string errorMessage = string.Empty;
+                if (((System.Net.WebException)(ex)).Status == WebExceptionStatus.ProtocolError)
                 {
-                    return Json(new { GridList = objFoodList, ChartList = objCountResultsChartList, Message = ex.Message }, JsonRequestBehavior.AllowGet);
-                }
-                else if (selectedtype == "Device")
-                {
-                    return Json(new { GridList = objDeviceList, ChartList = objCountResultsChartList, Message = ex.Message }, JsonRequestBehavior.AllowGet);
-                }
-                else if (selectedtype == "Drug")
-                {
-                    return Json(new { GridList = objDrugList, ChartList = objCountResultsChartList, Message = ex.Message }, JsonRequestBehavior.AllowGet);
+                    errorMessage = "No matches found!";
                 }
                 else
                 {
-                    //throw new HttpResponseException(ThrowCustomException(ex));
+                    errorMessage = ex.Message;
+                }
+
+                if (selectedtype == "Food")
+                {
+                    return Json(new { GridList = objFoodList, ChartList = objCountResultsChartList, Message = errorMessage }, JsonRequestBehavior.AllowGet);
+                }
+                else if (selectedtype == "Device")
+                {
+                    return Json(new { GridList = objDeviceList, ChartList = objCountResultsChartList, Message = errorMessage }, JsonRequestBehavior.AllowGet);
+                }
+                else if (selectedtype == "Drug")
+                {
+                    return Json(new { GridList = objDrugList, ChartList = objCountResultsChartList, Message = errorMessage }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
                     return null;
                 }
             }
             return null;
-        }
-
-        //public static HttpResponseMessage ThrowCustomException(Exception ex)
-        //{
-        //    HttpResponseMessage objMSG = new System.Net.Http.HttpResponseMessage();
-        //    if (((System.Web.Http.HttpResponseException)(ex)).Response.StatusCode.ToString() == "Unauthorized")
-        //    {
-        //        objMSG.StatusCode = HttpStatusCode.Unauthorized;
-        //    }
-        //    else
-        //    {
-        //        objMSG.StatusCode = HttpStatusCode.InternalServerError;
-        //    }
-        //    objMSG.ReasonPhrase = ex.Message;
-
-        //    return objMSG;
-        //}
-
-        public JsonResult ConvertstringToJsonArray(object jsonobj)
-        {
-            return Json(jsonobj, JsonRequestBehavior.AllowGet);
         }
     }
 }
